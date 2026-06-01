@@ -1,0 +1,321 @@
+/* ════════════════════════════════════════════════════════
+   OLIS — WAITLIST  ·  styles.css
+   Brand: cream off-white background, black script logo,
+   signature red as the accent.
+   Baked-in design choices (from Claude Design handoff):
+   underline fields · solid button · 16px radius · red #D81E2C.
+   ════════════════════════════════════════════════════════ */
+
+
+/* ────────────────────────────────────────────────────────
+   BRAND TOKENS
+   ──────────────────────────────────────────────────────── */
+:root {
+  --cream:      #F4ECDC;   /* creamy off-white background    */
+  --cream-deep: #EFE5D1;   /* a half-tone for subtle depth   */
+  --ink:        #15110D;   /* near-black brand ink           */
+  --ink-soft:   #6B6055;   /* muted warm grey for sub-copy   */
+  --red:        #D81E2C;   /* OLIS signature red             */
+  --red-deep:   #B8000C;   /* hover / pressed                */
+  --line:       rgba(21,17,13,0.14);
+  --radius:     16px;
+}
+
+
+/* ────────────────────────────────────────────────────────
+   RESET / BASE
+   ──────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+/* faint warm vignette so the cream feels like a material, not a flat fill */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 8%, rgba(255,255,255,0.55), transparent 60%),
+    radial-gradient(140% 120% at 50% 120%, var(--cream-deep), transparent 55%);
+  z-index: 0;
+}
+
+
+/* ────────────────────────────────────────────────────────
+   TOP BAR — pulsing brand dot
+   ──────────────────────────────────────────────────────── */
+header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 34px 40px 0;
+}
+
+.brand-dot {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--red);
+  flex-shrink: 0;
+  /* one-shot reveal in, then settle into the infinite pulse */
+  animation: dot-in .45s ease both,
+             pulse 2.4s cubic-bezier(.4,0,.2,1) .45s infinite;
+}
+
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0  rgba(216,30,44,0.45); }
+  70%  { box-shadow: 0 0 0 26px rgba(216,30,44,0);  }
+  100% { box-shadow: 0 0 0 0  rgba(216,30,44,0);    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-dot { animation: none; box-shadow: 0 0 0 6px rgba(216,30,44,0.10); }
+}
+
+
+/* ────────────────────────────────────────────────────────
+   MAIN
+   ──────────────────────────────────────────────────────── */
+main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+/* Centered Olis mark (hero) */
+.logo-wrap {
+  position: relative;
+  width: min(360px, 68vw);
+  margin: 0 auto 4px;
+}
+
+.logo-hero {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* The mark sits on a white field — multiply blends that white into
+     the cream page, leaving only the black letterforms (the .logo-dot
+     overlay repaints the red dot in pure signature red on top). */
+  mix-blend-mode: multiply;
+  /* one-shot: stays hidden through a 0.5s beat, then fades up. Never repeats. */
+  opacity: 0;
+  animation: mark-rise .85s cubic-bezier(.2,.7,.2,1) .5s both;
+}
+
+/* ---- wordmark reveal (plays once on load) --------------------- */
+@keyframes dot-in {
+  from { opacity: 0; transform: scale(.4); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes logo-dot-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes mark-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-hero { animation: none; opacity: 1; }
+}
+
+/* pulsing halo sitting exactly over the baked-in red dot of the logo */
+.logo-dot {
+  position: absolute;
+  left: 72.4%;
+  top: 40.8%;
+  width: 4.4%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--red);
+  animation: logo-dot-in .45s ease both,
+             pulse 2.4s cubic-bezier(.4,0,.2,1) .45s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-dot { animation: none; }
+}
+
+/* The little maxim — same calligraphic spirit as the logo, kept readable */
+.maxim {
+  font-family: "Cormorant", Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 16px auto 0;
+  max-width: 58ch;
+  letter-spacing: 0.01em;
+  text-wrap: pretty;
+}
+
+
+/* ────────────────────────────────────────────────────────
+   FORM
+   ──────────────────────────────────────────────────────── */
+form {
+  margin: 38px 0 0;
+  width: min(460px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.names,
+.field {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Inputs — refined hairline underline */
+form input {
+  flex: 1;
+  min-width: 0;
+  height: 56px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  padding: 0 4px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(21,17,13,0.26);
+  border-radius: 0;
+  transition: border-color .22s ease, box-shadow .22s ease, background .22s ease;
+}
+
+form input::placeholder {
+  color: #B0A38F;
+  letter-spacing: 0.02em;
+}
+
+form input:focus {
+  border-bottom-color: var(--red);
+  box-shadow: 0 1px 0 0 var(--red);
+}
+
+/* Button — solid signature red */
+button {
+  height: 56px;
+  padding: 0 32px;
+  flex-shrink: 0;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: var(--radius);
+  white-space: nowrap;
+  color: #fff;
+  background: var(--red);
+  border: 1px solid var(--red);
+  transition: background .2s ease, color .2s ease, border-color .2s ease, transform .08s ease, opacity .2s ease;
+}
+
+button:hover  { background: var(--red-deep); border-color: var(--red-deep); }
+button:active { transform: translateY(1px); }
+button:disabled { opacity: .55; cursor: default; }
+
+.note {
+  font-size: 12px;
+  color: var(--ink-soft);
+  min-height: 16px;
+  letter-spacing: 0.01em;
+  transition: color .18s ease;
+}
+.note.error { color: var(--red-deep); }
+
+
+/* ────────────────────────────────────────────────────────
+   SUCCESS STATE
+   ──────────────────────────────────────────────────────── */
+.success {
+  margin: 38px 0 0;
+  width: min(460px, 100%);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  animation: rise .5s cubic-bezier(.2,.7,.2,1) both;
+}
+.success.show { display: flex; }
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 6px rgba(216,30,44,0.12);
+}
+
+.success h2 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.success p {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 34ch;
+  line-height: 1.6;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ────────────────────────────────────────────────────────
+   FOOTER
+   ──────────────────────────────────────────────────────── */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 24px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+
+/* ────────────────────────────────────────────────────────
+   RESPONSIVE
+   ──────────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  header { padding: 24px 22px 0; }
+  .brand-dot { width: 46px; height: 46px; }
+  .names { flex-direction: column; }
+  .field { flex-direction: column; }
+  button { width: 100%; }
+}
