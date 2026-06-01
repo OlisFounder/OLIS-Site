@@ -21,7 +21,7 @@
    4. Copy the Web App URL and paste it below, replacing
       PASTE_YOUR_APPS_SCRIPT_URL_HERE.
    ──────────────────────────────────────────────────────── */
-const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3c7RsuShQN6weYWM2kBfW70xOsig1cF6joybPrjXI0CFwwG0lst9uO9vdk-fnDWQPUQ/exec";
 
 document.addEventListener('DOMContentLoaded', function () {
   const form    = document.getElementById('waitlist');
