@@ -118,9 +118,9 @@ main {
      the cream page, leaving only the black letterforms (the .logo-dot
      overlay repaints the red dot in pure signature red on top). */
   mix-blend-mode: multiply;
-  /* one-shot: stays hidden through a 0.5s beat, then fades up. Never repeats. */
+  /* one-shot: stays hidden through a 3s beat, then fades up slowly & softly. Never repeats. */
   opacity: 0;
-  animation: mark-rise .85s cubic-bezier(.2,.7,.2,1) .5s both;
+  animation: mark-rise 2.8s cubic-bezier(.22, 1, .36, 1) 3s both;
 }
 
 /* ---- wordmark reveal (plays once on load) --------------------- */
